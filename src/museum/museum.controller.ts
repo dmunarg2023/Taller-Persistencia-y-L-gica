@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseInterceptors } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { BusinessErrorsInterceptor } from '../shared/interceptors/business-errors.interceptor';
 import { MuseumDto } from './museum.dto';
 import { MuseumEntity } from './museum.entity';
 import { MuseumService } from './museum.service';
+import { MuseumsQueryDto } from './museums-query.dto';
 
 @Controller('museums')
 @UseInterceptors(BusinessErrorsInterceptor)
@@ -12,10 +13,9 @@ export class MuseumController {
     constructor(private readonly museumService: MuseumService) {}
 
   @Get()
-  async findAll() {
-    return await this.museumService.findAll();
+  async findAll(@Query() query: MuseumsQueryDto) {
+    return await this.museumService.findAllWithFilters(query);
   }
-
   @Get(':museumId')
   async findOne(@Param('museumId') museumId: string) {
     return await this.museumService.findOne(museumId);

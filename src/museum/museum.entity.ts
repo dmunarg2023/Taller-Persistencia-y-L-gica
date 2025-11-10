@@ -29,4 +29,8 @@ export class MuseumEntity {
     @OneToMany(() => ArtworkEntity, artwork => artwork.museum)
     artworks: ArtworkEntity[];
 
+    @Column({ type: 'int', nullable: true })
+    foundedBefore?: number;
+
+
 }
